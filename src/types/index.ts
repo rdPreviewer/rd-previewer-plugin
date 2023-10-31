@@ -1,0 +1,1 @@
+export type SrcType =  string | Blob | ArrayBuffer

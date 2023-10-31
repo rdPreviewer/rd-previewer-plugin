@@ -1,8 +1,9 @@
+
 <!--
  * @Author: famin.ma famin.ma@tcl.com
  * @Date: 2023-10-21 15:32:53
  * @LastEditors: famin.ma famin.ma@tcl.com
- * @LastEditTime: 2023-10-23 16:50:22
+ * @LastEditTime: 2023-10-24 15:56:39
  * @FilePath: \preview\src\components\Text.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -14,9 +15,10 @@
   />
 </template>
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch, watchEffect, computed, reactive } from "vue";
 import { Codemirror } from "vue-codemirror";
-
+import { isUrl, isBlob, isArrayBuffer } from "@/utils";
+import type { SrcType } from "@/types";
 // 语言插件
 // 作用：它会对不同语言文本文件的语法分析。从而，
 // 1、样式UI上更贴合该文件类型，提供语法高亮/缩进/格式化等；2、编辑时提供该文本文件的语言提示语法
@@ -43,36 +45,52 @@ import { liquid } from "@codemirror/lang-liquid";
 
 // 其他插件
 import { oneDark } from "@codemirror/theme-one-dark";
-
-const props = withDefaults(
-  defineProps<{
-    src: any;
-    extend: string;
-    dark: boolean;
-  }>(),
-  {
-    extend: "txt",
-    dark: false,
-  }
-);
-const data = ref("");
-const getData = async () => {
-  return new Promise((rsolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open("get", props.src);
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4) {
-        if (xhr.status == 200) {
-          rsolve(xhr.response);
-        }
-      }
-    };
-    xhr.send(null);
-  });
-};
-onMounted(async () => {
-  data.value = await getData();
+onMounted(() => {
+  debugger;
+  console.log(props.src);
 });
+const props = defineProps<{
+  src: SrcType;
+  extend: string;
+  options: any;
+}>();
+
+const data = ref<string>("");
+const handlerData = async (src: SrcType) => {
+  if (isUrl(src)) {
+    data.value = await new Promise((rsolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open("get", src);
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status == 200) {
+            rsolve(xhr.response);
+          }
+        }
+      };
+      xhr.send(null);
+    });
+  } else if (isBlob(src)) {
+    data.value = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsText(src);
+      reader.onload = function (e) {
+        resolve(e.target?.result);
+      };
+    });
+  } else if (isArrayBuffer(src)) {
+    data.value = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsText(new Blob([src]));
+      reader.onload = function (e) {
+        resolve(e.target?.result);
+      };
+    });
+  } else {
+    data.value = src;
+  }
+};
+
 const langPlugins: any = {
   css,
   md: markdown,
@@ -95,13 +113,28 @@ const langPlugins: any = {
 };
 
 // 是否可编辑
-const disabled = ref<boolean>(true);
+const disabled = computed(() => {
+  return props.options.disabled ?? true;
+});
+
 // 文本配置插件
-const extensions = [langPlugins[props.extend] && langPlugins[props.extend]()];
+const extensions = reactive([]);
+watchEffect(() => {
+  langPlugins[props.extend] && extensions.push(langPlugins[props.extend]());
+  props.options.dark && extensions.push(oneDark);
+});
+
+watch(
+  () => props.src,
+  async (value: SrcType) => {
+    await handlerData(value);
+  },
+  { immediate: true }
+);
 </script>
 <style scoped>
-  .v-codemirror {
-    text-align: left;
-  }
+.v-codemirror {
+  text-align: left;
+}
 </style>
 
