@@ -1,0 +1,23 @@
+{
+  "name": "m-previewer",
+  "version": "1.0.8",
+  "description": "file previewer for vue3 base vite",
+  "main": "./m-previewer.es.js",
+  "module": "./m-previewer.es.js",
+  "exports": {
+    ".": {
+      "import": "./m-previewer.es.js",
+      "require": "./m-previewer.umd.js"
+    },
+    "./style.css": {
+      "import": "./style.css",
+      "require": "./style.css"
+    }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["vue", "vue3", "preview", "word", "pdf", "execl", "ppt", "office"],
+  "author": "famin.ma",
+  "license": "ISC"
+}
