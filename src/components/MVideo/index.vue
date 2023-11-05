@@ -1,11 +1,3 @@
-<!--
- * @Author: famin.ma famin.ma@tcl.com
- * @Date: 2023-10-22 18:38:17
- * @LastEditors: famin.ma famin.ma@tcl.com
- * @LastEditTime: 2023-11-02 20:11:45
- * @FilePath: \preview-plugin\src\components\MVideo.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
   <div id="video"></div>
 </template>
@@ -22,8 +14,8 @@ import Player from "xgplayer";
 import "xgplayer/dist/index.min.css";
 import { watch, ref } from "vue";
 import type { SrcType } from "@/types/index";
-import { isUrl, isBlob, isArrayBuffer } from "@/utils";
 import { VIDEO_MIME_TYPE } from "@/config/const";
+import { useHandleData } from "@/components/MVideo/useHandleData";
 
 const props = defineProps<{
   src: SrcType;
@@ -31,32 +23,7 @@ const props = defineProps<{
   options: any;
 }>();
 
-const data = ref<any>();
-const handlerData = async (src: SrcType) => {
-  if (isUrl(src)) {
-    data.value = src;
-  } else if (isBlob(src)) {
-    data.value = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(src);
-      reader.onload = function (e) {
-        resolve(e.target?.result);
-      };
-    });
-  } else if (isArrayBuffer(src)) {
-    data.value = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(
-        new Blob([src], { type: VIDEO_MIME_TYPE[props.extend] })
-      );
-      reader.onload = function (e) {
-        resolve(e.target?.result);
-      };
-    });
-  } else {
-    data.value = src;
-  }
-};
+const data = ref<string>();
 
 const initVideo = () => {
   new Player(
@@ -97,7 +64,7 @@ const initVideo = () => {
 watch(
   () => props.src,
   async (value: SrcType) => {
-    await handlerData(value);
+    data.value = await useHandleData(value, VIDEO_MIME_TYPE[props.extend]);
     initVideo();
   },
   { immediate: true }

@@ -1,11 +1,3 @@
-/*
- * @Author: famin.ma famin.ma@tcl.com
- * @Date: 2023-10-21 15:35:08
- * @LastEditors: famin.ma famin.ma@tcl.com
- * @LastEditTime: 2023-11-02 16:40:47
- * @FilePath: \preview\src\config\const.ts
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 export const SUPPORT_PREVIEW_FILE_TYPES = [
     'text',// 文本
     'image',// 图片
@@ -13,7 +5,7 @@ export const SUPPORT_PREVIEW_FILE_TYPES = [
     'audio',// 音频
     'word',// word
     'execl',// execl
-    'ppt',// ppt
+    'pptx',// pptx
     'pdf',//pdf
 
 ]

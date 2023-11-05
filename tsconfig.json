@@ -8,7 +8,7 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -25,6 +25,6 @@
         "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/components/MPptx/d3.js", "src/components/MPptx/dimple.js"],
+  "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

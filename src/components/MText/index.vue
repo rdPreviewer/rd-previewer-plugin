@@ -1,12 +1,3 @@
-
-<!--
- * @Author: famin.ma famin.ma@tcl.com
- * @Date: 2023-10-21 15:32:53
- * @LastEditors: famin.ma famin.ma@tcl.com
- * @LastEditTime: 2023-11-02 16:34:48
- * @FilePath: \preview\src\components\Text.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
   <codemirror
     :model-value="data"
@@ -25,8 +16,8 @@
 <script lang="ts" setup>
 import { ref, onMounted, watch, watchEffect, computed, reactive } from "vue";
 import { Codemirror } from "vue-codemirror";
-import { isUrl, isBlob, isArrayBuffer } from "@/utils";
 import type { SrcType } from "@/types/index";
+import {useHandleData} from '@/components/MText/useHandleData'
 // 语言插件
 // 作用：它会对不同语言文本文件的语法分析。从而，
 // 1、样式UI上更贴合该文件类型，提供语法高亮/缩进/格式化等；2、编辑时提供该文本文件的语言提示语法
@@ -61,40 +52,6 @@ const props = defineProps<{
 }>();
 
 const data = ref<string>("");
-const handlerData = async (src: SrcType) => {
-  if (isUrl(src)) {
-    data.value = await new Promise((rsolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open("get", src);
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          if (xhr.status == 200) {
-            rsolve(xhr.response);
-          }
-        }
-      };
-      xhr.send(null);
-    });
-  } else if (isBlob(src)) {
-    data.value = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsText(src);
-      reader.onload = function (e) {
-        resolve(e.target?.result);
-      };
-    });
-  } else if (isArrayBuffer(src)) {
-    data.value = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsText(new Blob([src]));
-      reader.onload = function (e) {
-        resolve(e.target?.result);
-      };
-    });
-  } else {
-    data.value = src;
-  }
-};
 
 const langPlugins: any = {
   css,
@@ -132,7 +89,7 @@ watchEffect(() => {
 watch(
   () => props.src,
   async (value: SrcType) => {
-    await handlerData(value);
+    data.value = await useHandleData(value);
   },
   { immediate: true }
 );

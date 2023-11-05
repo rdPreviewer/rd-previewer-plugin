@@ -1,11 +1,3 @@
-<!--
- * @Author: famin.ma famin.ma@tcl.com
- * @Date: 2023-10-22 20:05:33
- * @LastEditors: famin.ma famin.ma@tcl.com
- * @LastEditTime: 2023-11-04 20:54:20
- * @FilePath: \preview-plugin\src\components\MPdf.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
   <vue-pdf-embed
     :source="data"
@@ -56,7 +48,7 @@ import { createLoadingTask } from "vue3-pdfjs/esm"; // 获得总页数
 
 import { onMounted, ref, watch, nextTick, computed, reactive } from "vue";
 import type { SrcType } from "@/types/index";
-import { isBlob } from "@/utils";
+import { useHandleData } from "@/components/MPdf/useHandleData";
 const props = defineProps<{
   src: SrcType;
   options: any;
@@ -75,19 +67,6 @@ const rotation = ref(defaultOptions.value.rotation);
 
 const numPages = ref(0);
 const data = ref("");
-const handlerData = async (src: SrcType) => {
-  if (isBlob(src)) {
-    data.value = await new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.onload = (e) => {
-        resolve(e.target?.result);
-      };
-      fileReader.readAsArrayBuffer(src);
-    });
-  } else {
-    data.value = src;
-  }
-};
 const initPdf = () => {
   nextTick(() => {
     const loadingTask = createLoadingTask(data.value);
@@ -99,8 +78,7 @@ const initPdf = () => {
 watch(
   () => props.src,
   async (value: SrcType) => {
-    debugger
-    await handlerData(value);
+    data.value = await useHandleData(value);
     initPdf();
   },
   { immediate: true }
