@@ -1,6 +1,6 @@
 ## MPreviewer
 
-A one-stop preview plugin  for vue3 built vite, that can preview multiple formats including files such as `pptx`, `word`, `execl`, `pdf`, `image`, `text`, `video`, `audio` 
+基于vite构建的一站式集成预览插件，可以预览多种格式的文件，包括`pptx`, `word`, `execl`, `pdf`, `image`, `text`, `video`, `audio` ，支持vue3。
 
 ## Installation
 current node v16+
@@ -13,7 +13,8 @@ npm install m-previewer
 
 ```js
 // 引入并注册MPreviewer
-import MPreviewer from 'm-previewer'
+import MPreviewer from 'm-previewer' // ES模块的环境中（如现代浏览器）
+// const MPreviewer =require("m-previewer").default // Node.js环境
 app.use(MPreviewer)
 
 // 按需引入并注册 指定类型文件预览
@@ -27,7 +28,12 @@ import {
     MAudio, 
     MVideo
 } from 'm-previewer'
+// const { MWord, MExecl, MPdf, MPptx, MText, MImage, MAudio, MVideo} = require("m-previewer") 
 app.use(MWord).use(MExecl).use(MPdf).use(MPptx).use(MText).use(MImage).use(MAudio).use(MVideo)
+
+// 引入样式文件
+import 'm-previewer/style.css'
+// require('m-previewer/style.css')
 
 ```
 

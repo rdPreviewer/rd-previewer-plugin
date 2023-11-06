@@ -1,6 +1,6 @@
 {
   "name": "m-previewer",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "file previewer for vue3 base vite",
   "main": "./m-previewer.es.js",
   "module": "./m-previewer.es.js",

@@ -1,3 +1,4 @@
+import 'virtual:svg-icons-register'
 import MPreviewer from './components/MPreviewer/install'
 import MWord from './components/MWord/install'
 import MImage from './components/MImage/install'

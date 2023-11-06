@@ -131,5 +131,7 @@ const turnPage = () => {
   // padding: 8px 15px;
   // padding-left: 10px;
   cursor: pointer;
+  height: 40px;
+  line-height: 40px;
 }
 </style>
