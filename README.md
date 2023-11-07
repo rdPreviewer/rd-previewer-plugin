@@ -1,14 +1,7 @@
-<!--
- * @Author: famin.ma famin.ma@tcl.com
- * @Date: 2023-10-20 11:10:05
- * @LastEditors: famin.ma famin.ma@tcl.com
- * @LastEditTime: 2023-11-07 19:34:56
- * @FilePath: \rd-previewer-plugin\README.md
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 # Vue 3 + TypeScript + Vite
 
 
+## 简介
 一个集成的一站式预览插件，能支持常见项目场景中的需求，对word、execl、pptx、pdf、各类文本、图片，音视频的预览，
 并且要求具备以下特点：
 
@@ -18,3 +11,8 @@
 - 提供必要配置项、多文件资源格式输入，更加灵活通用
 - 支持统一导入和按需引入
 - 基于 vitepress 构建的文档，较好的预览体验
+
+## 打包
+插件打包在`lib`目录下，已上传内部制品库https://devops.tone.tcl.com/ezPackage/snapshot/626556009700225058/list下的`@rd/previewer`
+使用文档：https://rdpreviewer.github.io/
+
