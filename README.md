@@ -13,6 +13,7 @@
 - 基于 vitepress 构建的文档，较好的预览体验
 
 ## 打包
-插件打包在`lib`目录下，已上传内部制品库https://devops.tone.tcl.com/ezPackage/snapshot/626556009700225058/list下的`@rd/previewer`
+插件打包在`lib`目录下，已上传内部制品库https://devops.tone.tcl.com/ezPackage/snapshot/626556009700225058/list  
+下的`@rd/previewer`
 使用文档：https://rdpreviewer.github.io/
 
