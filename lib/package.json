@@ -1,13 +1,13 @@
 {
-  "name": "m-previewer",
-  "version": "1.0.9",
-  "description": "file previewer for vue3 base vite",
-  "main": "./m-previewer.es.js",
-  "module": "./m-previewer.es.js",
+  "name": "@rd/previewer",
+  "version": "1.0.0",
+  "description": "a file previewer plugin for vue3 base vite",
+  "main": "./index.es.js",
+  "module": "./index.es.js",
   "exports": {
     ".": {
-      "import": "./m-previewer.es.js",
-      "require": "./m-previewer.umd.js"
+      "import": "./index.es.js",
+      "require": "./index.umd.js"
     },
     "./style.css": {
       "import": "./style.css",

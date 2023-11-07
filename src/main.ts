@@ -4,7 +4,7 @@ import App from './App.vue'
 
 import 'virtual:svg-icons-register'
 
-import MPreviewer, {MText} from '../lib/m-previewer.es.js'
+import MPreviewer, {MText} from '../lib/index.es.js'
 import '../lib/style.css'
 createApp(App)
 .use(MPreviewer)

@@ -35,8 +35,8 @@ export default defineConfig({
     outDir: 'lib', // 默认dist
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"), // 打包入口
-      name: "MPreviewer", // 生成的模块名称
-      fileName: (format) => `m-previewer.${format}.js`, // 根据不同的格式（format），生成不同的文件名
+      name: "@rd/previewer", // 生成的模块名称
+      fileName: (format) => `index.${format}.js`, // 根据不同的格式（format），生成不同的文件名
     },
     rollupOptions: {
       external: ["vue"], // 打包依赖排除vue
