@@ -5,6 +5,7 @@ import { URL, fileURLToPath } from "node:url";
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import path from 'path'
 import { visualizer } from "rollup-plugin-visualizer";
+import vueJsx from '@vitejs/plugin-vue-jsx'
 
 // 获取__dirname
 function getCurrnetDir() {
@@ -14,6 +15,7 @@ function getCurrnetDir() {
 export default defineConfig({
   plugins: [
     vue(),
+    vueJsx(), // 支持/tsx语法编译
     visualizer(),
     createSvgIconsPlugin({
       // Specify the icon folder to be cached

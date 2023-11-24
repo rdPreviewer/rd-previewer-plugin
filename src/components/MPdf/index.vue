@@ -5,33 +5,12 @@
     :rotation="rotation"
   >
   </vue-pdf-embed>
+  <!-- 工具栏 -->
   <div
     class="page-tool"
     v-if="data && pageNum"
   >
-    <!-- svg多处使用可以抽离公共组件 -->
-    <svg
-      class="page-tool-item"
-      @click="prvePage"
-    >
-      <use xlink:href="#icon-prve"></use>
-    </svg>
-    <div class="page-tool-item">
-      {{ pageNum }}/{{ numPages }}
-    </div>
-    <svg
-      class="page-tool-item"
-      @click="turnPage"
-    >
-      <use xlink:href="#icon-turn"></use>
-    </svg>
-    <svg
-      class="page-tool-item"
-      @click="nextPage"
-    >
-      <use xlink:href="#icon-next"></use>
-    </svg>
-
+    <component :is="renderBtns()"></component>
   </div>
 </template>
 
@@ -46,9 +25,10 @@ export default defineComponent({
 import VuePdfEmbed from "vue-pdf-embed";
 import { createLoadingTask } from "vue3-pdfjs/esm"; // 获得总页数
 
-import { onMounted, ref, watch, nextTick, computed, reactive } from "vue";
+import { onMounted, ref, unref, watch, nextTick, computed, reactive } from "vue";
 import type { SrcType } from "@/types/index";
 import { useHandleData } from "@/components/MPdf/useHandleData";
+import { useBtns } from './useBtns.tsx'
 const props = defineProps<{
   src: SrcType;
   options: any;
@@ -62,11 +42,17 @@ const defaultOptions = computed(() => {
     props.options
   );
 });
-const pageNum = defaultOptions.value.pagation ? ref(1) : ref(null);
+const pageNum = unref(defaultOptions).pagation ? ref(1) : ref(null);
 const rotation = ref(defaultOptions.value.rotation);
-
 const numPages = ref(0);
 const data = ref("");
+
+const {renderBtns} = useBtns({
+  pageNum,
+  rotation,
+  numPages
+})
+
 const initPdf = () => {
   nextTick(() => {
     const loadingTask = createLoadingTask(data.value);
@@ -75,6 +61,7 @@ const initPdf = () => {
     });
   });
 };
+
 watch(
   () => props.src,
   async (value: SrcType) => {
@@ -83,26 +70,6 @@ watch(
   },
   { immediate: true }
 );
-// 上一页
-const prvePage = () => {
-  if (pageNum.value > 1) {
-    pageNum.value = pageNum.value - 1;
-  }
-};
-// 下一页
-const nextPage = () => {
-  if (pageNum.value < numPages.value) {
-    pageNum.value = pageNum.value + 1;
-  }
-};
-// 翻转
-const turnPage = () => {
-  if (rotation.value < 270) {
-    rotation.value = rotation.value + 90;
-  } else {
-    rotation.value = 0;
-  }
-};
 </script>
 <style lang="less" scoped>
 .vue-pdf-embed {
@@ -126,6 +93,8 @@ const turnPage = () => {
   cursor: pointer;
   margin: 10px auto;
 }
+</style>
+<style lang="less">
 .page-tool-item {
   width: 24px;
   // padding: 8px 15px;
