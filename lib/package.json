@@ -1,6 +1,6 @@
 {
   "name": "@rd/previewer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "a file previewer plugin for vue3 base vite",
   "main": "./index.es.js",
   "module": "./index.es.js",
