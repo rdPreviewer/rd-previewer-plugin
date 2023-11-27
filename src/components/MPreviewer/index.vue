@@ -4,50 +4,14 @@
     ref="previewerRef"
   >
     <template v-if="src">
-      <m-text
-        v-if="fileInfo.type &&fileInfo.type==='text'"
+      <!-- 文件预览动态组件部分 -->
+      <component
+        :is="fileInfo.type && components[fileInfo.type]"
         :src="fileInfo.src"
         :extend="extend"
-        :options="options.textConf || {}"
-      ></m-text>
-      <m-image
-        v-if="fileInfo.type &&fileInfo.type==='image'"
-        :src="fileInfo.src"
-        :extend="extend"
-        :options="options.imageConf || {}"
-      ></m-image>
-      <m-video
-        v-if="fileInfo.type &&fileInfo.type==='video'"
-        :src="fileInfo.src"
-        :extend="extend"
-        :options="options.videoConf || {}"
-      ></m-video>
-      <m-audio
-        v-if="fileInfo.type &&fileInfo.type==='audio'"
-        :src="fileInfo.src"
-        :options="options.audioConf || {}"
-      ></m-audio>
-      <m-pdf
-        v-if="fileInfo.type &&fileInfo.type==='pdf'"
-        :src="fileInfo.src"
-        :options="options.pdfConf || {}"
-      ></m-pdf>
-      <m-execl
-        v-if="fileInfo.type &&fileInfo.type==='execl'"
-        :src="fileInfo.src"
-        :options="options.execlConf || {}"
-      ></m-execl>
-      <m-word
-        v-if="fileInfo.type &&fileInfo.type==='word'"
-        :src="fileInfo.src"
-        :options="options.wordConf || {}"
-      ></m-word>
-      <m-pptx
-        v-if="fileInfo.type &&fileInfo.type==='pptx'"
-        :src="fileInfo.src"
-        :options="options.pptxConf || {}"
-      ></m-pptx>
-
+        :options="options[fileInfo.type + 'Conf'] || {}"
+      ></component>
+      <!-- 不支持预览提示部分 -->
       <div
         v-if="!fileInfo.type"
         class="unview-styl"
@@ -95,15 +59,6 @@ const MPdf = defineAsyncComponent(() => import("../MPdf/index.vue"));
 const MExecl = defineAsyncComponent(() => import("../MExecl/index.vue"));
 const MWord = defineAsyncComponent(() => import("../MWord/index.vue"));
 const MPptx = defineAsyncComponent(() => import("../MPptx/index.vue"));
-// import MText   from "../MText/index.vue"
-// import MImage  from "../MImage/index.vue"
-// import MVideo from "../MVideo/index.vue"
-// import MAudio from "../MAudio/index.vue"
-// import MPdf   from "../MPdf/index.vue"
-// import MExecl from "../MExecl/index.vue"
-// import MWord  from "../MWord/index.vue"
-// import MPptx  from "../MPptx/index.vue"
-
 
 import type { SrcType, FileItem } from "@/types/index";
 
@@ -116,6 +71,18 @@ const props = withDefaults(
     },
   }
 );
+
+const components = reactive({
+  text: MText,
+  image: MImage,
+  video: MVideo,
+  audio: MAudio,
+  pdf: MPdf,
+  execl: MExecl,
+  word: MWord,
+  pptx: MPptx,
+});
+
 const fileTypeOptions: FileItem[] = [
   {
     type: "text",
@@ -178,9 +145,7 @@ const previewerRef = ref(null)
 watch(
   () => props.src,
   () => {
-    debugger
     getFileInfo();
-   
   },
   { immediate: true }
 );
